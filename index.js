@@ -1,15 +1,16 @@
 'use strict';
 const Task = require('./lib/task');
 const CLIRenderer = require('./lib/renderer').CLIRenderer;
+const SummaryRenderer = require('./lib/renderer').SummaryRenderer;
 
 class Listr {
 
-	constructor(tasks) {
+	constructor(tasks, RendererClass) {
 		if (tasks && !Array.isArray(tasks)) {
 			throw new TypeError('Expected an array of tasks');
 		}
 
-		this._RendererClass = CLIRenderer;
+		this._RendererClass = RendererClass || (process.env.CI ? SummaryRenderer : CLIRenderer);
 		this._tasks = [];
 		this.level = 0;
 
